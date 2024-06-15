@@ -14,8 +14,8 @@ export default function Canvas() {
       const ctx = canvas.getContext("2d") as CanvasRenderingContext2D;
 
       // Set background color
-      //ctx.fillStyle = "black";
-      //ctx.fillRect(0, 0, canvas.width, canvas.height);
+      ctx.fillStyle = "black";
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
 
       if (!ctx) {
         console.error("Failed to get 2D context from canvas element.");
@@ -40,7 +40,7 @@ export default function Canvas() {
     }
   }, [circles]);
 
-  const width = window.innerWidth - 50;
+  const width = window.innerWidth;
   const height = window.innerHeight - 100;
 
   return <canvas width={width} height={height} ref={canvasRef} />;
