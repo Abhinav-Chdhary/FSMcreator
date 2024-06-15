@@ -13,10 +13,6 @@ export default function Canvas() {
     if (canvas) {
       const ctx = canvas.getContext("2d") as CanvasRenderingContext2D;
 
-      // Set background color
-      ctx.fillStyle = "black";
-      ctx.fillRect(0, 0, canvas.width, canvas.height);
-
       if (!ctx) {
         console.error("Failed to get 2D context from canvas element.");
         return;
