@@ -16,4 +16,9 @@ export default class Circle {
     ctx.stroke();
     ctx.closePath();
   }
+  isCircle(x: number, y: number): boolean {
+    const distanceSquared = Math.pow(x - this.x, 2) + Math.pow(y - this.y, 2);
+    const radiusSquared = Math.pow(this.radius, 2);
+    return distanceSquared <= radiusSquared;
+  }
 }

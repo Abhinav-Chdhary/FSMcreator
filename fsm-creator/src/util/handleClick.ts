@@ -1,16 +1,15 @@
 import Circle from "../elements/circle";
 
-export function handleDoubleClick(
+export function handleClickOnCanvas(
   event: MouseEvent,
   canvas: HTMLCanvasElement,
   ctx: CanvasRenderingContext2D,
-  circles: Circle[],
-  setCircles: React.Dispatch<React.SetStateAction<Circle[]>>
+  circles: Circle[]
 ) {
   const rect = canvas.getBoundingClientRect();
   const x = event.clientX - rect.left;
   const y = event.clientY - rect.top;
-  const newCircle = new Circle(x, y, 30, false);
-  newCircle.drawCircle(ctx);
-  setCircles([...circles, newCircle]);
+  circles.map((circle) => {
+    if (circle.isCircle(x, y)) console.log("Yes part of a circle");
+  });
 }
