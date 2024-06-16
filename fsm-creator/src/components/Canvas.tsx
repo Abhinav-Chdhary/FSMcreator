@@ -1,6 +1,5 @@
 import { useEffect, useRef, useState } from "react";
 import { handleDoubleClick } from "../util/handleDoubleClick";
-import { handleClickDrag } from "../util/handleClickDrag";
 import "./Canvas.css";
 
 export default function Canvas() {
@@ -23,20 +22,14 @@ export default function Canvas() {
         handleDoubleClick(event, canvas, ctx, circles, setCircles);
       canvas.addEventListener("dblclick", boundHandleDoubleClick);
 
-      // Add click and drag event listeners for drawing arrows
-      const cleanUpHandleClickDrag = handleClickDrag(canvas, ctx, circles);
-
       // Clean up event listeners on component unmount
       return () => {
         canvas.removeEventListener("dblclick", boundHandleDoubleClick);
-        cleanUpHandleClickDrag();
       };
     } else {
       console.warn("Canvas element not found in the DOM.");
     }
   }, [circles]);
 
-  
-
-  return <canvas ref={canvasRef} width={800} height={600}/>;
+  return <canvas ref={canvasRef} width={800} height={600} />;
 }
