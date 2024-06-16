@@ -1,3 +1,7 @@
 canvas{
-    background-color:#03001f;
+    background-color:#fff;
+    max-width: 800px;
+    display: block;
+    border-radius: 20px;
+    margin: 1em auto;
 }
