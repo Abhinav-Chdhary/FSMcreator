@@ -12,9 +12,11 @@ export function handleDoubleClick(
   const rect = canvas.getBoundingClientRect();
   const x = event.clientX - rect.left;
   const y = event.clientY - rect.top;
-  if (selectedObject instanceof Circle)
-    console.log("You double clicked a circle");
-  else {
+  if (selectedObject instanceof Circle) {
+    if (!selectedObject.isFinalState) {
+      selectedObject.makeFinal(ctx);
+    }
+  } else {
     const newCircle = new Circle(x, y, 30, false);
     newCircle.drawCircle(ctx);
     setCircles([...circles, newCircle]);

@@ -21,4 +21,13 @@ export default class Circle {
     const radiusSquared = Math.pow(this.radius, 2);
     return distanceSquared <= radiusSquared;
   }
+  makeFinal(ctx: CanvasRenderingContext2D) {
+    ctx.beginPath();
+    ctx.arc(this.x, this.y, this.radius - 10, 0, Math.PI * 2);
+    ctx.strokeStyle = "black";
+    ctx.stroke();
+    ctx.closePath();
+
+    this.isFinalState = true;
+  }
 }
