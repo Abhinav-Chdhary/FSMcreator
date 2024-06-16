@@ -10,6 +10,7 @@ import "./Canvas.css";
 import Circle from "../elements/circle";
 import { selectType } from "../util/customTypes";
 import { handleKeyDown } from "../util/handleDelete";
+import { redraw } from "../util/redraw";
 
 export default function Canvas() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -47,9 +48,11 @@ export default function Canvas() {
 
       // on press delete event
       const boundHandleKeyDown = (event: KeyboardEvent) =>
-        handleKeyDown(event, selectedObject, circles, setCircles, canvas, ctx);
+        handleKeyDown(event, selectedObject, setCircles);
       window.addEventListener("keydown", boundHandleKeyDown);
 
+      //redraw if anything changes
+      redraw(ctx, circles, canvas, selectedObject);
       // Clean up event listeners on component unmount
       return () => {
         canvas.removeEventListener("dblclick", boundHandleDoubleClick);

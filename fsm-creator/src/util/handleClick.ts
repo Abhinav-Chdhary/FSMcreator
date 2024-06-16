@@ -12,11 +12,15 @@ export function handleClickOnCanvas(
   const rect = canvas.getBoundingClientRect();
   const x = event.clientX - rect.left;
   const y = event.clientY - rect.top;
-
+  let deselect: boolean = true;
   circles.map((circle) => {
     if (circle.isCircle(x, y)) {
+      deselect = false;
       setSelectedObject(circle);
-      redraw(ctx, circles, canvas, circle)
+      redraw(ctx, circles, canvas, circle);
     }
   });
+  if (deselect) {
+    setSelectedObject(null);
+  }
 }
