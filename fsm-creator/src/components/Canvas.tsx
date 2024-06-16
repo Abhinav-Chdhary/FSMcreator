@@ -1,12 +1,14 @@
 import { useEffect, useRef, useState } from "react";
 import { handleDoubleClick } from "../util/handleDoubleClick";
+import { handleClickOnCanvas } from "../util/handleClick";
 import "./Canvas.css";
 import Circle from "../elements/circle";
-import { handleClickOnCanvas } from "../util/handleClick";
+import { selectType } from "../util/customTypes";
 
 export default function Canvas() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const [circles, setCircles] = useState<Circle[]>([]);
+  const [selectedObject, setSelectedObject] = useState<selectType>(null);
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -21,12 +23,19 @@ export default function Canvas() {
 
       // Add double click event listener for drawing circles
       const boundHandleDoubleClick = (event: MouseEvent) =>
-        handleDoubleClick(event, canvas, ctx, circles, setCircles);
+        handleDoubleClick(
+          event,
+          canvas,
+          ctx,
+          circles,
+          setCircles,
+          selectedObject
+        );
       canvas.addEventListener("dblclick", boundHandleDoubleClick);
 
       // Add click event listener for selecting objects
       const boundHandleClick = (event: MouseEvent) =>
-        handleClickOnCanvas(event, canvas, ctx, circles);
+        handleClickOnCanvas(event, canvas, ctx, circles, setSelectedObject);
       canvas.addEventListener("click", boundHandleClick);
 
       // Clean up event listeners on component unmount
@@ -37,7 +46,7 @@ export default function Canvas() {
     } else {
       console.warn("Canvas element not found in the DOM.");
     }
-  }, [circles]);
+  }, [circles, selectedObject]);
 
   return <canvas ref={canvasRef} width={800} height={600} />;
 }
