@@ -1,9 +1,15 @@
-import { useEffect, useRef, useState } from "react";
+import {
+  KeyboardEvent as ReactKeyboardEvent,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
 import { handleDoubleClick } from "../util/handleDoubleClick";
 import { handleClickOnCanvas } from "../util/handleClick";
 import "./Canvas.css";
 import Circle from "../elements/circle";
 import { selectType } from "../util/customTypes";
+import { handleKeyDown } from "../util/handleDelete";
 
 export default function Canvas() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -39,10 +45,16 @@ export default function Canvas() {
         handleClickOnCanvas(event, canvas, circles, setSelectedObject);
       canvas.addEventListener("click", boundHandleClick);
 
+      // on press delete event
+      const boundHandleKeyDown = (event: KeyboardEvent) =>
+        handleKeyDown(event, selectedObject, circles, setCircles, canvas, ctx);
+      window.addEventListener("keydown", boundHandleKeyDown);
+
       // Clean up event listeners on component unmount
       return () => {
         canvas.removeEventListener("dblclick", boundHandleDoubleClick);
         canvas.removeEventListener("click", boundHandleClick);
+        window.removeEventListener("keydown", boundHandleKeyDown);
       };
     } else {
       console.warn("Canvas element not found in the DOM.");
