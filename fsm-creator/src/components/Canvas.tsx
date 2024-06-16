@@ -42,7 +42,7 @@ export default function Canvas() {
 
       // Add click event listener for selecting objects
       const boundHandleClick = (event: MouseEvent) =>
-        handleClickOnCanvas(event, canvas, circles, setSelectedObject);
+        handleClickOnCanvas(event, ctx, canvas, circles, setSelectedObject);
       canvas.addEventListener("click", boundHandleClick);
 
       // on press delete event

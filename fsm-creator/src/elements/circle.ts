@@ -9,12 +9,15 @@ export default class Circle {
     this.radius = radius;
     this.isFinalState = isFinal;
   }
-  drawCircle(ctx: CanvasRenderingContext2D) {
+  drawCircle(ctx: CanvasRenderingContext2D, color: string) {
     ctx.beginPath();
     ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
-    ctx.strokeStyle = "black";
+    ctx.strokeStyle = color;
     ctx.stroke();
     ctx.closePath();
+    if (this.isFinalState) {
+      this.makeFinal(ctx);
+    }
   }
   isCircle(x: number, y: number): boolean {
     const distanceSquared = Math.pow(x - this.x, 2) + Math.pow(y - this.y, 2);

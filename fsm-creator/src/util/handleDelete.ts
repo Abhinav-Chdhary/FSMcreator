@@ -16,7 +16,7 @@ export function handleKeyDown(
       setCircles((prevCircles) =>
         prevCircles.filter((circle) => circle !== selectedObject)
       );
-      redraw(ctx, circles, canvas);
+      redraw(ctx, circles, canvas, selectedObject);
     }
   }
 }

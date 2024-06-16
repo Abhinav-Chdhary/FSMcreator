@@ -20,7 +20,7 @@ export function handleDoubleClick(
     }
   } else {
     const newCircle = new Circle(x, y, 30, false);
-    newCircle.drawCircle(ctx);
+    newCircle.drawCircle(ctx, "black");
     setCircles([...circles, newCircle]);
   }
 }
