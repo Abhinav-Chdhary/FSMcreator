@@ -29,13 +29,14 @@ export default function Canvas() {
           ctx,
           circles,
           setCircles,
-          selectedObject
+          selectedObject,
+          setSelectedObject
         );
       canvas.addEventListener("dblclick", boundHandleDoubleClick);
 
       // Add click event listener for selecting objects
       const boundHandleClick = (event: MouseEvent) =>
-        handleClickOnCanvas(event, canvas, ctx, circles, setSelectedObject);
+        handleClickOnCanvas(event, canvas, circles, setSelectedObject);
       canvas.addEventListener("click", boundHandleClick);
 
       // Clean up event listeners on component unmount

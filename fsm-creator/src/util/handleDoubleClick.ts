@@ -7,7 +7,8 @@ export function handleDoubleClick(
   ctx: CanvasRenderingContext2D,
   circles: Circle[],
   setCircles: React.Dispatch<React.SetStateAction<Circle[]>>,
-  selectedObject: selectType
+  selectedObject: selectType,
+  setSelectedObject: React.Dispatch<React.SetStateAction<selectType>>
 ) {
   const rect = canvas.getBoundingClientRect();
   const x = event.clientX - rect.left;
@@ -15,6 +16,7 @@ export function handleDoubleClick(
   if (selectedObject instanceof Circle) {
     if (!selectedObject.isFinalState) {
       selectedObject.makeFinal(ctx);
+      setSelectedObject(null);
     }
   } else {
     const newCircle = new Circle(x, y, 30, false);
