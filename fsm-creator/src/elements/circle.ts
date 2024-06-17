@@ -9,7 +9,7 @@ export default class Circle {
     this.radius = radius;
     this.isFinalState = isFinal;
   }
-  drawCircle(ctx: CanvasRenderingContext2D, color: string) {
+  drawCircle(ctx: CanvasRenderingContext2D, color: string = "black") {
     ctx.beginPath();
     ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
     ctx.strokeStyle = color;
