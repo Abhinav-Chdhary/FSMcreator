@@ -11,6 +11,7 @@ import Circle from "../elements/circle";
 import { selectType } from "../util/customTypes";
 import { handleKeyDown } from "../util/handleDelete";
 import { redraw } from "../util/redraw";
+import { handleClickDrag } from "../util/handleDrag";
 
 export default function Canvas() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -51,6 +52,14 @@ export default function Canvas() {
         handleKeyDown(event, selectedObject, setCircles);
       window.addEventListener("keydown", boundHandleKeyDown);
 
+      //on click and drag
+      const cleanUpHandleClickDrag = handleClickDrag(
+        ctx,
+        canvas,
+        selectedObject,
+        circles
+      );
+
       //redraw if anything changes
       redraw(ctx, circles, canvas, selectedObject);
       // Clean up event listeners on component unmount
@@ -58,6 +67,7 @@ export default function Canvas() {
         canvas.removeEventListener("dblclick", boundHandleDoubleClick);
         canvas.removeEventListener("click", boundHandleClick);
         window.removeEventListener("keydown", boundHandleKeyDown);
+        cleanUpHandleClickDrag();
       };
     } else {
       console.warn("Canvas element not found in the DOM.");
