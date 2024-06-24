@@ -1,51 +1,37 @@
 import {
   KeyboardEvent as ReactKeyboardEvent,
+  useContext,
   useEffect,
-  useRef,
-  useState,
 } from "react";
+import { CanvasContext } from "../context/canvasContext";
 import { handleDoubleClick } from "../util/handleDoubleClick";
 import { handleClickOnCanvas } from "../util/handleClick";
-import "./Canvas.css";
-import Circle from "../elements/circle";
-import { selectType } from "../util/customTypes";
 import { handleKeyDown } from "../util/handleDelete";
 import { redraw } from "../util/redraw";
 import { handleClickDrag } from "../util/handleDrag";
 import { handleShiftDrag } from "../util/handleShiftDrag";
+import "./Canvas.css";
 
 export default function Canvas() {
-  const canvasRef = useRef<HTMLCanvasElement>(null);
-  const [circles, setCircles] = useState<Circle[]>([]);
-  const [selectedObject, setSelectedObject] = useState<selectType>(null);
+  const canvasContext = useContext(CanvasContext);
+
+  if (!canvasContext) {
+    throw new Error("CanvasContext must be used within a provider");
+  }
+  const { canvasRef, ctx, circles, setCircles, selectedObject } = canvasContext;
 
   useEffect(() => {
     const canvas = canvasRef.current;
 
-    if (canvas) {
-      const ctx = canvas.getContext("2d") as CanvasRenderingContext2D;
-
-      if (!ctx) {
-        console.error("Failed to get 2D context from canvas element.");
-        return;
-      }
-
+    if (canvas && ctx) {
       // Add double click event listener for drawing circles
       const boundHandleDoubleClick = (event: MouseEvent) =>
-        handleDoubleClick(
-          event,
-          canvas,
-          ctx,
-          circles,
-          setCircles,
-          selectedObject,
-          setSelectedObject
-        );
+        handleDoubleClick(event, ctx, canvas);
       canvas.addEventListener("dblclick", boundHandleDoubleClick);
 
       // Add click event listener for selecting objects
       const boundHandleClick = (event: MouseEvent) =>
-        handleClickOnCanvas(event, ctx, canvas, circles, setSelectedObject);
+        handleClickOnCanvas(event, ctx, canvas);
       canvas.addEventListener("click", boundHandleClick);
 
       // on press delete event
@@ -55,19 +41,14 @@ export default function Canvas() {
 
       // on press shift
       const boundHandleShiftDown = (event: KeyboardEvent) =>
-        handleShiftDrag(ctx, canvas, event, selectedObject);
+        handleShiftDrag(event, ctx, canvas);
       window.addEventListener("keydown", boundHandleShiftDown);
 
       //on click and drag
-      const cleanUpHandleClickDrag = handleClickDrag(
-        ctx,
-        canvas,
-        selectedObject,
-        circles
-      );
+      const cleanUpHandleClickDrag = handleClickDrag(ctx, canvas);
 
       //redraw if anything changes
-      redraw(ctx, circles, canvas, selectedObject);
+      redraw(ctx, canvas);
       // Clean up event listeners on component unmount
       return () => {
         canvas.removeEventListener("dblclick", boundHandleDoubleClick);

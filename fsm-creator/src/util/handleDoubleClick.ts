@@ -1,15 +1,18 @@
+import { useContext } from "react";
+import { CanvasContext } from "../context/canvasContext";
 import Circle from "../elements/circle";
-import { selectType } from "./customTypes";
 
 export function handleDoubleClick(
   event: MouseEvent,
-  canvas: HTMLCanvasElement,
   ctx: CanvasRenderingContext2D,
-  circles: Circle[],
-  setCircles: React.Dispatch<React.SetStateAction<Circle[]>>,
-  selectedObject: selectType,
-  setSelectedObject: React.Dispatch<React.SetStateAction<selectType>>
+  canvas: HTMLCanvasElement
 ) {
+  const canvasContext = useContext(CanvasContext);
+  if (!canvasContext) {
+    throw new Error("CanvasContext must be used within a CanvasProvider");
+  }
+  const { circles, selectedObject, setSelectedObject, setCircles } =
+    canvasContext;
   const rect = canvas.getBoundingClientRect();
   const x = event.clientX - rect.left;
   const y = event.clientY - rect.top;
