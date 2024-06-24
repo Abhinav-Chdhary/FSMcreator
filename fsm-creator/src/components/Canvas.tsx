@@ -12,6 +12,7 @@ import { selectType } from "../util/customTypes";
 import { handleKeyDown } from "../util/handleDelete";
 import { redraw } from "../util/redraw";
 import { handleClickDrag } from "../util/handleDrag";
+import { handleShiftDrag } from "../util/handleShiftDrag";
 
 export default function Canvas() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -52,6 +53,11 @@ export default function Canvas() {
         handleKeyDown(event, selectedObject, setCircles);
       window.addEventListener("keydown", boundHandleKeyDown);
 
+      // on press shift
+      const boundHandleShiftDown = (event: KeyboardEvent) =>
+        handleShiftDrag(ctx, canvas, event, selectedObject);
+      window.addEventListener("keydown", boundHandleShiftDown);
+
       //on click and drag
       const cleanUpHandleClickDrag = handleClickDrag(
         ctx,
@@ -67,6 +73,7 @@ export default function Canvas() {
         canvas.removeEventListener("dblclick", boundHandleDoubleClick);
         canvas.removeEventListener("click", boundHandleClick);
         window.removeEventListener("keydown", boundHandleKeyDown);
+        window.removeEventListener("keydown", boundHandleShiftDown);
         cleanUpHandleClickDrag();
       };
     } else {
