@@ -1,6 +1,6 @@
 import Canvas from "./components/Canvas";
 import "./App.css";
-import { CanvasProvider } from "./context/canvasContext";
+import CanvasProvider from "./context/canvasProvider";
 
 export default function App() {
   return (

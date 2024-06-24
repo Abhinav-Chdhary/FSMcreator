@@ -1,6 +1,6 @@
 import { useContext } from "react";
-import { redraw } from "./redraw";
-import { CanvasContext } from "../context/canvasContext";
+import { useRedraw } from "./useRedraw";
+import CanvasContext from "../context/canvasContext";
 
 export function handleClickOnCanvas(
   event: MouseEvent,
@@ -20,7 +20,7 @@ export function handleClickOnCanvas(
     if (circle.isCircle(x, y)) {
       deselect = false;
       setSelectedObject(circle);
-      redraw(ctx, circles, canvas, circle);
+      useRedraw(ctx, canvas);
     }
   });
   if (deselect) {

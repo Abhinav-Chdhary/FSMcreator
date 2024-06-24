@@ -1,7 +1,7 @@
 import { useContext } from "react";
-import { CanvasContext } from "../context/canvasContext";
+import CanvasContext from "../context/canvasContext";
 
-export function redraw(
+export function useRedraw(
   ctx: CanvasRenderingContext2D,
   canvas: HTMLCanvasElement
 ) {

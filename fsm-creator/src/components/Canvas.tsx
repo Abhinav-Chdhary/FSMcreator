@@ -3,11 +3,11 @@ import {
   useContext,
   useEffect,
 } from "react";
-import { CanvasContext } from "../context/canvasContext";
+import CanvasContext from "../context/canvasContext";
 import { handleDoubleClick } from "../util/handleDoubleClick";
 import { handleClickOnCanvas } from "../util/handleClick";
 import { handleKeyDown } from "../util/handleDelete";
-import { redraw } from "../util/redraw";
+import { useRedraw } from "../util/useRedraw";
 import { handleClickDrag } from "../util/handleDrag";
 import { handleShiftDrag } from "../util/handleShiftDrag";
 import "./Canvas.css";
@@ -18,12 +18,16 @@ export default function Canvas() {
   if (!canvasContext) {
     throw new Error("CanvasContext must be used within a provider");
   }
-  const { canvasRef, ctx, circles, setCircles, selectedObject } = canvasContext;
+  const { canvasRef, circles, setCircles, selectedObject } = canvasContext;
 
   useEffect(() => {
     const canvas = canvasRef.current;
 
-    if (canvas && ctx) {
+    if (canvas) {
+      const ctx = canvas.getContext("2d") as CanvasRenderingContext2D;
+      if (!ctx) {
+        console.error("Failed to get 2d context");
+      }
       // Add double click event listener for drawing circles
       const boundHandleDoubleClick = (event: MouseEvent) =>
         handleDoubleClick(event, ctx, canvas);
@@ -45,10 +49,14 @@ export default function Canvas() {
       window.addEventListener("keydown", boundHandleShiftDown);
 
       //on click and drag
-      const cleanUpHandleClickDrag = handleClickDrag(ctx, canvas);
+      const cleanUpHandleClickDrag = handleClickDrag(
+        ctx,
+        canvas,
+        selectedObject
+      );
 
       //redraw if anything changes
-      redraw(ctx, canvas);
+      useRedraw(ctx, canvas);
       // Clean up event listeners on component unmount
       return () => {
         canvas.removeEventListener("dblclick", boundHandleDoubleClick);

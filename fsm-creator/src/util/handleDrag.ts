@@ -1,17 +1,12 @@
 import Circle from "../elements/circle";
-import { useContext } from "react";
-import { CanvasContext } from "../context/canvasContext";
-import { redraw } from "./redraw";
+import { useRedraw} from "./useRedraw";
+import { selectType } from "./customTypes";
 
 export function handleClickDrag(
   ctx: CanvasRenderingContext2D,
-  canvas: HTMLCanvasElement
+  canvas: HTMLCanvasElement,
+  selectedObject: selectType
 ) {
-  const canvasContext = useContext(CanvasContext);
-  if (!canvasContext) {
-    throw new Error("CanvasContext must be used within a CanvasProvider");
-  }
-  const { circles, selectedObject } = canvasContext;
   let isDragging = false;
 
   const handleMouseDown = (event: MouseEvent) => {
@@ -30,7 +25,7 @@ export function handleClickDrag(
       if (selectedObject instanceof Circle) {
         selectedObject.x = x;
         selectedObject.y = y;
-        redraw(ctx, canvas);
+        useRedraw(ctx, canvas);
       }
     }
   };

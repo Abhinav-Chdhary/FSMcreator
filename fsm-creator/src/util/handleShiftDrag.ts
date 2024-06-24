@@ -1,5 +1,5 @@
 import { useContext } from "react";
-import { CanvasContext } from "../context/canvasContext";
+import CanvasContext from "../context/canvasContext";
 import Circle from "../elements/circle";
 
 export function handleShiftDrag(
