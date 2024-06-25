@@ -1,9 +1,4 @@
-import {
-  KeyboardEvent as ReactKeyboardEvent,
-  useContext,
-  useEffect,
-} from "react";
-import CanvasContext from "../context/canvasContext";
+import { KeyboardEvent as ReactKeyboardEvent, useEffect } from "react";
 import { handleDoubleClick } from "../util/handleDoubleClick";
 import { handleClickOnCanvas } from "../util/handleClick";
 import { handleKeyDown } from "../util/handleDelete";
@@ -11,14 +6,10 @@ import { useRedraw } from "../util/useRedraw";
 import { handleClickDrag } from "../util/handleDrag";
 import { handleShiftDrag } from "../util/handleShiftDrag";
 import "./Canvas.css";
+import useCanvasStore from "../util/canvasStore";
 
 export default function Canvas() {
-  const canvasContext = useContext(CanvasContext);
-
-  if (!canvasContext) {
-    throw new Error("CanvasContext must be used within a provider");
-  }
-  const { canvasRef, circles, setCircles, selectedObject } = canvasContext;
+  const { canvasRef, circles, selectedObject } = useCanvasStore();
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -40,7 +31,7 @@ export default function Canvas() {
 
       // on press delete event
       const boundHandleKeyDown = (event: KeyboardEvent) =>
-        handleKeyDown(event, selectedObject, setCircles);
+        handleKeyDown(event, selectedObject);
       window.addEventListener("keydown", boundHandleKeyDown);
 
       // on press shift

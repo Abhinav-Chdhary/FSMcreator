@@ -1,17 +1,13 @@
-import { useContext } from "react";
-import CanvasContext from "../context/canvasContext";
 import Circle from "../elements/circle";
+import useCanvasStore from "./canvasStore";
 
 export function handleShiftDrag(
   event: KeyboardEvent,
   ctx: CanvasRenderingContext2D,
   canvas: HTMLCanvasElement
 ) {
-  const canvasContext = useContext(CanvasContext);
-  if (!canvasContext) {
-    throw new Error("CanvasContext must be used within a CanvasProvider");
-  }
-  const { selectedObject } = canvasContext;
+  
+  const { selectedObject } = useCanvasStore();
   let isDragging = false;
   c1: Circle;
   c2: Circle;

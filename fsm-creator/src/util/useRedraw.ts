@@ -1,15 +1,10 @@
-import { useContext } from "react";
-import CanvasContext from "../context/canvasContext";
+import useCanvasStore from "./canvasStore";
 
 export function useRedraw(
   ctx: CanvasRenderingContext2D,
   canvas: HTMLCanvasElement
 ) {
-  const canvasContext = useContext(CanvasContext);
-  if (!canvasContext) {
-    throw new Error("CanvasContext must be used within a CanvasProvider");
-  }
-  const { circles, selectedObject } = canvasContext;
+  const { circles, selectedObject } = useCanvasStore();
   ctx.clearRect(0, 0, canvas.width, canvas.height);
   circles.map((circle) => {
     if (circle === selectedObject) circle.drawCircle(ctx, "blue");

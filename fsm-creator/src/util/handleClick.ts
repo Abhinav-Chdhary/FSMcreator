@@ -1,17 +1,12 @@
-import { useContext } from "react";
 import { useRedraw } from "./useRedraw";
-import CanvasContext from "../context/canvasContext";
+import useCanvasStore from "./canvasStore";
 
 export function handleClickOnCanvas(
   event: MouseEvent,
   ctx: CanvasRenderingContext2D,
   canvas: HTMLCanvasElement
 ) {
-  const canvasContext = useContext(CanvasContext);
-  if (!canvasContext) {
-    throw new Error("CanvasContext must be used within a CanvasProvider");
-  }
-  const { circles, setSelectedObject } = canvasContext;
+  const { circles, setSelectedObject } = useCanvasStore();
   const rect = canvas.getBoundingClientRect();
   const x = event.clientX - rect.left;
   const y = event.clientY - rect.top;
