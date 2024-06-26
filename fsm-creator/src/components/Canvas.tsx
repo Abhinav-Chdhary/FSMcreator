@@ -6,17 +6,19 @@ import {
 } from "react";
 import { handleDoubleClick } from "../util/handleDoubleClick";
 import { handleClickOnCanvas } from "../util/handleClick";
-import "./Canvas.css";
-import Circle from "../elements/circle";
 import { selectType } from "../util/customTypes";
 import { handleKeyDown } from "../util/handleDelete";
 import { redraw } from "../util/redraw";
 import { handleClickDrag } from "../util/handleDrag";
 import { handleShiftDrag } from "../util/handleShiftDrag";
+import Circle from "../elements/circle";
+import Link from "../elements/link";
+import "./Canvas.css";
 
 export default function Canvas() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const [circles, setCircles] = useState<Circle[]>([]);
+  const [links, setLinks] = useState<Link[]>([]);
   const [selectedObject, setSelectedObject] = useState<selectType>(null);
 
   useEffect(() => {
@@ -45,7 +47,14 @@ export default function Canvas() {
 
       // Add click event listener for selecting objects
       const boundHandleClick = (event: MouseEvent) =>
-        handleClickOnCanvas(event, ctx, canvas, circles, setSelectedObject);
+        handleClickOnCanvas(
+          event,
+          ctx,
+          canvas,
+          circles,
+          links,
+          setSelectedObject
+        );
       canvas.addEventListener("click", boundHandleClick);
 
       // on press delete event
@@ -55,7 +64,7 @@ export default function Canvas() {
 
       // on press shift
       const boundHandleShiftDown = (event: KeyboardEvent) =>
-        handleShiftDrag(ctx, canvas, event, selectedObject);
+        handleShiftDrag(ctx, canvas, event, circles, links, setLinks);
       window.addEventListener("keydown", boundHandleShiftDown);
 
       //on click and drag
@@ -63,11 +72,12 @@ export default function Canvas() {
         ctx,
         canvas,
         selectedObject,
-        circles
+        circles,
+        links
       );
 
       //redraw if anything changes
-      redraw(ctx, circles, canvas, selectedObject);
+      redraw(ctx, circles, links, canvas, selectedObject);
       // Clean up event listeners on component unmount
       return () => {
         canvas.removeEventListener("dblclick", boundHandleDoubleClick);
@@ -79,7 +89,7 @@ export default function Canvas() {
     } else {
       console.warn("Canvas element not found in the DOM.");
     }
-  }, [circles, selectedObject]);
+  }, [circles, links, selectedObject]);
 
   return <canvas ref={canvasRef} width={800} height={600} />;
 }

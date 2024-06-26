@@ -1,4 +1,5 @@
 import Circle from "../elements/circle";
+import Link from "../elements/link";
 import { selectType } from "./customTypes";
 import { redraw } from "./redraw";
 
@@ -6,7 +7,8 @@ export function handleClickDrag(
   ctx: CanvasRenderingContext2D,
   canvas: HTMLCanvasElement,
   selectedObject: selectType,
-  circles: Circle[]
+  circles: Circle[],
+  links: Link[]
 ) {
   let isDragging = false;
 
@@ -26,7 +28,7 @@ export function handleClickDrag(
       if (selectedObject instanceof Circle) {
         selectedObject.x = x;
         selectedObject.y = y;
-        redraw(ctx, circles, canvas, selectedObject);
+        redraw(ctx, circles, links, canvas, selectedObject);
       }
     }
   };

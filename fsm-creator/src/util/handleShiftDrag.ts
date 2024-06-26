@@ -1,25 +1,49 @@
 import Circle from "../elements/circle";
-import { selectType } from "./customTypes";
+import Link from "../elements/link";
 
 export function handleShiftDrag(
-    ctx: CanvasRenderingContext2D,
+  ctx: CanvasRenderingContext2D,
   canvas: HTMLCanvasElement,
   event: KeyboardEvent,
-  selectedObject: selectType
+  circles: Circle[],
+  links: Link[],
+  setLinks: React.Dispatch<React.SetStateAction<Link[]>>
 ) {
-    let isDragging = false;
-    c1: Circle;
-    c2: Circle;
-    const handleMouseDown = (event:MouseEvent)=>{
-        const rect = canvas.getBoundingClientRect();
-        const x = event.clientX-rect.left;
-        const y = event.clientY-rect.top;
-        if(selectedObject instanceof Circle && selectedObject.isCircle(x, y)){
-            isDragging = true;
-        }
+  let c1: Circle | null = null;
+  let c2: Circle | null = null;
+  let startX: number, startY: number;
+  const handleMouseDown = (event: MouseEvent) => {
+    const rect = canvas.getBoundingClientRect();
+    startX = event.clientX - rect.left;
+    startY = event.clientY - rect.top;
+    circles.forEach((circle) => {
+      if (circle.isCircle(startX, startY)) {
+        c1 = circle;
+        // attach link to circle too here
+      }
+    });
+  };
+  const handleMouseUp = (event: MouseEvent) => {
+    const rect = canvas.getBoundingClientRect();
+    const x = event.clientX - rect.left;
+    const y = event.clientY - rect.top;
+    circles.forEach((circle) => {
+      if (circle.isCircle(x, y)) {
+        c2 = circle;
+      }
+    });
+    if (c1 && c2) {
+      const newLink = new Link(c1, c2);
+      newLink.drawArrowArc(ctx);
+      setLinks([...links, newLink]);
     }
+  };
   if (event.shiftKey) {
-    console.log("Shift pressed", selectedObject);
+    canvas.addEventListener("mousedown", handleMouseDown);
+    window.addEventListener("mouseup", handleMouseUp);
+    return () => {
+      canvas.removeEventListener("mousedown", handleMouseDown);
+      window.removeEventListener("mouseup", handleMouseUp);
+    };
   }
-  
 }
