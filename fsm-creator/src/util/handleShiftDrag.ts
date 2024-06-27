@@ -12,6 +12,7 @@ export function handleShiftDrag(
   let c1: Circle | null = null;
   let c2: Circle | null = null;
   let startX: number, startY: number;
+
   const handleMouseDown = (event: MouseEvent) => {
     const rect = canvas.getBoundingClientRect();
     startX = event.clientX - rect.left;
@@ -19,10 +20,10 @@ export function handleShiftDrag(
     circles.forEach((circle) => {
       if (circle.isCircle(startX, startY)) {
         c1 = circle;
-        // attach link to circle too here
       }
     });
   };
+
   const handleMouseUp = (event: MouseEvent) => {
     const rect = canvas.getBoundingClientRect();
     const x = event.clientX - rect.left;
@@ -34,7 +35,7 @@ export function handleShiftDrag(
     });
     if (c1 && c2) {
       const newLink = new Link(c1, c2);
-      newLink.drawArrowArc(ctx);
+      newLink.drawArrowFinalArc(ctx);
       setLinks([...links, newLink]);
     }
   };

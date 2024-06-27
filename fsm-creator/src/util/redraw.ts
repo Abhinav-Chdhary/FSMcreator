@@ -15,6 +15,6 @@ export function redraw(
     else circle.drawCircle(ctx, "black");
   });
   links.forEach((link) => {
-    link.drawArrowArc(ctx);
+    link.drawArrowFinalArc(ctx);
   });
 }
