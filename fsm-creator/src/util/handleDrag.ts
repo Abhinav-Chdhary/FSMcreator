@@ -32,7 +32,7 @@ export function handleClickDrag(
       }
     }
   };
-  const handleMouseUp = (event: MouseEvent) => {
+  const handleMouseUp = () => {
     isDragging = false;
   };
   canvas.addEventListener("mousedown", handleMouseDown);
