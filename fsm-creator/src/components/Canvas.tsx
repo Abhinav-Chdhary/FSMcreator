@@ -64,7 +64,15 @@ export default function Canvas() {
 
       // on press shift
       const boundHandleShiftDown = (event: KeyboardEvent) =>
-        handleShiftDrag(ctx, canvas, event, circles, links, setLinks);
+        handleShiftDrag(
+          ctx,
+          canvas,
+          event,
+          circles,
+          links,
+          setLinks,
+          selectedObject
+        );
       window.addEventListener("keydown", boundHandleShiftDown);
 
       //on click and drag
