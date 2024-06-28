@@ -11,8 +11,8 @@ import { handleKeyDown } from "../util/handleDelete";
 import { redraw } from "../util/redraw";
 import { handleClickDrag } from "../util/handleDrag";
 import { handleShiftDrag } from "../util/handleShiftDrag";
-import Circle from "../elements/circle";
-import Link from "../elements/link";
+import Circle from "../classes/circle";
+import Link from "../classes/link";
 import "./Canvas.css";
 
 export default function Canvas() {
@@ -36,8 +36,8 @@ export default function Canvas() {
       const boundHandleDoubleClick = (event: MouseEvent) =>
         handleDoubleClick(
           event,
-          canvas,
           ctx,
+          canvas,
           circles,
           setCircles,
           selectedObject,

@@ -1,5 +1,5 @@
-import Circle from "../elements/circle";
-import Link from "../elements/link";
+import Circle from "../classes/circle";
+import Link from "../classes/link";
 import { selectType } from "./customTypes";
 import { redraw } from "./redraw";
 

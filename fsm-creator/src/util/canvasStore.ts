@@ -1,6 +1,6 @@
 import { create } from "zustand";
 import { devtools } from "zustand/middleware";
-import Circle from "../elements/circle";
+import Circle from "../classes/circle";
 import { selectType } from "../util/customTypes";
 
 interface CanvasState {

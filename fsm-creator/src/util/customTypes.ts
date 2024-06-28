@@ -1,2 +1,2 @@
-import Circle from "../elements/circle";
+import Circle from "../classes/circle";
 export type selectType = null | Circle;

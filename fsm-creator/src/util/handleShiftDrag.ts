@@ -1,6 +1,5 @@
-import Circle from "../elements/circle";
-<<<<<<< HEAD
-import Link from "../elements/link";
+import Circle from "../classes/circle";
+import Link from "../classes/link";
 import { selectType } from "./customTypes";
 import { redraw } from "./redraw";
 
@@ -76,28 +75,6 @@ export function handleShiftDrag(
       setLinks([...links, newLink]);
     }
   };
-=======
-import useCanvasStore from "./canvasStore";
-
-export function handleShiftDrag(
-  event: KeyboardEvent,
-  ctx: CanvasRenderingContext2D,
-  canvas: HTMLCanvasElement
-) {
-  
-  const { selectedObject } = useCanvasStore();
-  let isDragging = false;
-  c1: Circle;
-  c2: Circle;
-  const handleMouseDown = (event: MouseEvent) => {
-    const rect = canvas.getBoundingClientRect();
-    const x = event.clientX - rect.left;
-    const y = event.clientY - rect.top;
-    if (selectedObject instanceof Circle && selectedObject.isCircle(x, y)) {
-      isDragging = true;
-    }
-  };
->>>>>>> main
   if (event.shiftKey) {
     canvas.addEventListener("mousedown", handleMouseDown);
     canvas.addEventListener("mousemove", handleMouseMove);
