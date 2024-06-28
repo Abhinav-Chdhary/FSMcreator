@@ -1,15 +1,13 @@
 import Circle from "../elements/circle";
-import { selectType } from "./customTypes";
+import useCanvasStore from "./canvasStore";
 
 export function handleDoubleClick(
   event: MouseEvent,
-  canvas: HTMLCanvasElement,
   ctx: CanvasRenderingContext2D,
-  circles: Circle[],
-  setCircles: React.Dispatch<React.SetStateAction<Circle[]>>,
-  selectedObject: selectType,
-  setSelectedObject: React.Dispatch<React.SetStateAction<selectType>>
+  canvas: HTMLCanvasElement
 ) {
+  const { circles, selectedObject, setSelectedObject, setCircles } =
+    useCanvasStore();
   const rect = canvas.getBoundingClientRect();
   const x = event.clientX - rect.left;
   const y = event.clientY - rect.top;
