@@ -27,8 +27,8 @@ export function handleClickOnCanvas(
       const inputBox = document.getElementById("textEditor") as HTMLInputElement;
       if (inputBox) {
         setInputValue(circle.textContent);
-        inputBox.style.top = `${y}px`;
-        inputBox.style.left = `${x}px`;
+        // inputBox.style.top = `${y}px`;
+        // inputBox.style.left = `${x}px`;
         inputBox.focus();
       }
     }

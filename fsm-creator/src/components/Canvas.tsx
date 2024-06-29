@@ -112,8 +112,8 @@ export default function Canvas() {
     <>
       <input
         type='text'
-        id="textEditor"
-        style={{ position: "fixed" }}
+        id='textEditor'
+        style={{ position: "fixed", opacity:"0"}}
         value={inputValue}
         onChange={(event) => {
           setInputValue(event.target.value);
