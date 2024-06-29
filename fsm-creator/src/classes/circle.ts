@@ -27,10 +27,10 @@ export default class Circle {
     ctx.fillStyle = color;
     ctx.font = `bold ${this.radius / 1.5}px sans serif`;
     ctx.textAlign = "center";
-    ctx.fillText(this.textContent, this.x, this.y+this.radius/6);
+    ctx.fillText(this.textContent, this.x, this.y + this.radius / 6);
 
     if (this.isFinalState) {
-      this.makeFinal(ctx);
+      this.makeFinal(ctx, color);
     }
   }
   isCircle(x: number, y: number): boolean {
@@ -38,10 +38,10 @@ export default class Circle {
     const radiusSquared = Math.pow(this.radius, 2);
     return distanceSquared <= radiusSquared;
   }
-  makeFinal(ctx: CanvasRenderingContext2D) {
+  makeFinal(ctx: CanvasRenderingContext2D, color: string = "black") {
     ctx.beginPath();
     ctx.arc(this.x, this.y, this.radius - 10, 0, Math.PI * 2);
-    ctx.strokeStyle = "black";
+    ctx.strokeStyle = color;
     ctx.stroke();
     ctx.closePath();
 
