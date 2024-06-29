@@ -3,10 +3,12 @@ import Circle from "./circle";
 export default class Link {
   CircleOne: Circle;
   CircleTwo: Circle;
+  textContent: string;
 
   constructor(c1: Circle, c2: Circle) {
     this.CircleOne = c1;
     this.CircleTwo = c2;
+    this.textContent = "";
   }
   drawArrowFinalArc(ctx: CanvasRenderingContext2D, color: string = "black") {
     const radi = 30;

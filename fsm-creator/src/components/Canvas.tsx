@@ -20,6 +20,7 @@ export default function Canvas() {
   const [circles, setCircles] = useState<Circle[]>([]);
   const [links, setLinks] = useState<Link[]>([]);
   const [selectedObject, setSelectedObject] = useState<selectType>(null);
+  const [inputValue, setInputValue] = useState<string>("");
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -32,7 +33,6 @@ export default function Canvas() {
         return;
       }
 
-      // Add double click event listener for drawing circles
       const boundHandleDoubleClick = (event: MouseEvent) =>
         handleDoubleClick(
           event,
@@ -45,7 +45,6 @@ export default function Canvas() {
         );
       canvas.addEventListener("dblclick", boundHandleDoubleClick);
 
-      // Add click event listener for selecting objects
       const boundHandleClick = (event: MouseEvent) =>
         handleClickOnCanvas(
           event,
@@ -53,16 +52,17 @@ export default function Canvas() {
           canvas,
           circles,
           links,
-          setSelectedObject
+          selectedObject,
+          setSelectedObject,
+          inputValue,
+          setInputValue
         );
       canvas.addEventListener("click", boundHandleClick);
 
-      // on press delete event
       const boundHandleKeyDown = (event: KeyboardEvent) =>
         handleKeyDown(event, selectedObject, setCircles);
       window.addEventListener("keydown", boundHandleKeyDown);
 
-      // on press shift
       const boundHandleShiftDown = (event: KeyboardEvent) =>
         handleShiftDrag(
           ctx,
@@ -75,7 +75,6 @@ export default function Canvas() {
         );
       window.addEventListener("keydown", boundHandleShiftDown);
 
-      //on click and drag
       const cleanUpHandleClickDrag = handleClickDrag(
         ctx,
         canvas,
@@ -84,9 +83,8 @@ export default function Canvas() {
         links
       );
 
-      //redraw if anything changes
       redraw(ctx, circles, links, canvas, selectedObject);
-      // Clean up event listeners on component unmount
+
       return () => {
         canvas.removeEventListener("dblclick", boundHandleDoubleClick);
         canvas.removeEventListener("click", boundHandleClick);
@@ -99,5 +97,29 @@ export default function Canvas() {
     }
   }, [circles, links, selectedObject]);
 
-  return <canvas ref={canvasRef} width={800} height={600} />;
+  useEffect(() => {
+    if (selectedObject && selectedObject instanceof Circle) {
+      selectedObject.textContent = inputValue;
+      const canvas = canvasRef.current;
+      if (canvas) {
+        const ctx = canvas.getContext("2d") as CanvasRenderingContext2D;
+        redraw(ctx, circles, links, canvas, selectedObject);
+      }
+    }
+  }, [inputValue]);
+
+  return (
+    <>
+      <input
+        type='text'
+        id="textEditor"
+        style={{ position: "fixed" }}
+        value={inputValue}
+        onChange={(event) => {
+          setInputValue(event.target.value);
+        }}
+      />
+      <canvas ref={canvasRef} width={800} height={600} />
+    </>
+  );
 }

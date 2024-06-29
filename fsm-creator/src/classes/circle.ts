@@ -3,7 +3,7 @@ export default class Circle {
   y: number;
   radius: number;
   isFinalState: boolean;
-  stateName: string;
+  textContent: string;
   constructor(
     x: number,
     y: number,
@@ -15,7 +15,7 @@ export default class Circle {
     this.y = y;
     this.radius = radius;
     this.isFinalState = isFinal;
-    this.stateName = text;
+    this.textContent = text;
   }
   drawCircle(ctx: CanvasRenderingContext2D, color: string = "black") {
     ctx.beginPath();
@@ -27,7 +27,7 @@ export default class Circle {
     ctx.fillStyle = color;
     ctx.font = `${this.radius / 2}px Arial`;
     ctx.textAlign = "center";
-    ctx.fillText(this.stateName, this.x, this.y);
+    ctx.fillText(this.textContent, this.x, this.y);
 
     if (this.isFinalState) {
       this.makeFinal(ctx);
