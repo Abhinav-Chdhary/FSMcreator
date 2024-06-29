@@ -8,7 +8,7 @@ export default class Link {
   constructor(c1: Circle, c2: Circle) {
     this.CircleOne = c1;
     this.CircleTwo = c2;
-    this.textContent = "";
+    this.textContent = "t";
   }
   drawArrowFinalArc(ctx: CanvasRenderingContext2D, color: string = "black") {
     const radi = 30;
@@ -48,9 +48,31 @@ export default class Link {
         endArcY - arrowLength * Math.sin(angle + Math.PI / 6)
       );
       ctx.stroke();
+      this.drawTextAboveArrow(ctx, startArcX, startArcY, endArcX, endArcY);
     }
   }
   drawSelfLink(ctx: CanvasRenderingContext2D, color: string = "black") {
     // add code here
+  }
+  drawTextAboveArrow(
+    ctx: CanvasRenderingContext2D,
+    startArcX: number,
+    startArcY: number,
+    endArcX: number,
+    endArcY: number,
+    color = "black"
+  ) {
+    const midX = (startArcX + endArcX) / 2;
+    const midY = (startArcY + endArcY) / 2;
+
+    // Adjust position to place text above the midpoint
+    const textX = midX;
+    const textY = midY - 10; // Adjust as needed
+
+    // Draw the text above the midpoint
+    ctx.font = "20px sans serif";
+    ctx.fillStyle = color;
+    ctx.textAlign = "center";
+    ctx.fillText(this.textContent, textX, textY);
   }
 }
