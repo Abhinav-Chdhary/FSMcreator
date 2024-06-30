@@ -13,6 +13,9 @@ export default function Instructions() {
         <b>Select something: </b>Click on it
       </p>
       <p>
+        <b>Delete something: </b>Select and press delete
+      </p>
+      <p>
         <b>Move something: </b>Click and drag
       </p>
       <p>
