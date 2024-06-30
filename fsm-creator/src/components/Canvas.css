@@ -5,3 +5,7 @@ canvas{
     border-radius: 20px;
     margin: 1em auto;
 }
+input{
+    position: fixed;
+    opacity: 0;
+}

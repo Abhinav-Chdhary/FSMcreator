@@ -1,0 +1,9 @@
+.instrnContainer {
+  max-width: 800px;
+  display: block;
+  margin: 1em auto;
+  font-family: "Lucida Grande", "Segoe UI", sans-serif;
+}
+.instrnContainer p{
+  margin: 0px auto;
+}

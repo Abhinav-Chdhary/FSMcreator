@@ -25,7 +25,7 @@ export default class Circle {
     ctx.closePath();
 
     ctx.fillStyle = color;
-    ctx.font = `bold ${this.radius / 1.5}px sans serif`;
+    ctx.font = `bold 20px sans serif`;
     ctx.textAlign = "center";
     ctx.fillText(this.textContent, this.x, this.y + this.radius / 6);
 
