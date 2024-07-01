@@ -77,7 +77,7 @@ export function handleShiftDrag(
     }
   };
   if (event.shiftKey) {
-    console.log("shhift pressed")
+    console.log("shhift pressed");
     canvas.addEventListener("mousedown", handleMouseDown);
     canvas.addEventListener("mousemove", handleMouseMove);
     window.addEventListener("mouseup", handleMouseUp);
