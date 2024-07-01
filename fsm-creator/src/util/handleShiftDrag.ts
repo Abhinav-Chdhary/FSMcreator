@@ -15,7 +15,7 @@ export function handleShiftDrag(
   let c1: Circle | null = null;
   let c2: Circle | null = null;
   let startX: number, startY: number;
-  let isDragging = true;
+  let isDragging = false;
 
   const handleMouseDown = (event: MouseEvent) => {
     const rect = canvas.getBoundingClientRect();
@@ -60,6 +60,7 @@ export function handleShiftDrag(
   };
 
   const handleMouseUp = (event: MouseEvent) => {
+    redraw(ctx, circles, links, canvas, selectedObject);
     isDragging = false;
     const rect = canvas.getBoundingClientRect();
     const x = event.clientX - rect.left;
@@ -76,6 +77,7 @@ export function handleShiftDrag(
     }
   };
   if (event.shiftKey) {
+    console.log("shhift pressed")
     canvas.addEventListener("mousedown", handleMouseDown);
     canvas.addEventListener("mousemove", handleMouseMove);
     window.addEventListener("mouseup", handleMouseUp);
