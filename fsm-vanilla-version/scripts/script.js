@@ -21,6 +21,15 @@ window.onload = function () {
   // select an object
   canvas.onmousedown = function (e) {
     let mouse = getRelativeMousePosition(e, canvas);
-    console.log("mouse pressed");
+    selectedObject = selectAnObject(mouse.x, mouse.y, context);
   };
 };
+
+function selectAnObject(x, y, context) {
+  nodes.forEach((node) => {
+    if (node.containsPoint(x, y)) {
+      selectedObject = node;
+      node.draw(context, "blue");
+    }
+  });
+}
