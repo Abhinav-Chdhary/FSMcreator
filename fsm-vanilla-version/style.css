@@ -13,7 +13,15 @@
 
 body {
   text-align: center;
-  font: 14px/18px 'Lucida Grande', 'Segoe UI', sans-serif;
+  font: 14px/18px monospace, sans-serif;
+}
+
+canvas {
+  display: block;
+  max-width: 800px;
+  background-color: white;
+  border-radius: 20px;
+  margin: 10px auto;
 }
 
 h1 {
