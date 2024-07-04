@@ -3,7 +3,7 @@ export default class Node {
     this.x = x;
     this.y = y;
     this.isAcceptState = false;
-    this.text = "";
+    this.text = "txt";
     this.nodeRadius = 30;
     this.mouseOffsetX = 0;
     this.mouseOffsetY = 0;
@@ -13,6 +13,8 @@ export default class Node {
     context.arc(this.x, this.y, this.nodeRadius, 0, 2 * Math.PI, false);
     context.strokeStyle = color;
     context.stroke();
+
+    this.drawText(context, color);
 
     if (this.isAcceptState) {
       context.beginPath();
@@ -37,5 +39,11 @@ export default class Node {
   setAnchorPoint(x, y) {
     this.x = x + this.mouseOffsetX;
     this.y = y + this.mouseOffsetY;
+  }
+  drawText(context, color = "black") {
+    context.fillStyle = color;
+    context.font = "20px 'Times New Roman', sans-serif";
+    context.textAlign = "center";
+    context.fillText(this.text, this.x, this.y + this.nodeRadius / 6);
   }
 }
