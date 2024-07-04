@@ -5,6 +5,8 @@ export default class Node {
     this.isAcceptState = false;
     this.text = "";
     this.nodeRadius = 30;
+    this.mouseOffsetX = 0;
+    this.mouseOffsetY = 0;
   }
   draw(context, color = "black") {
     context.beginPath();
@@ -22,10 +24,15 @@ export default class Node {
   containsPoint(x, y) {
     let dx = x - this.x;
     let dy = y - this.y;
-    let scale = Math.sqrt(dx * dx + dy * dy);
-    return {
-      x: this.x + (dx * this.nodeRadius) / scale,
-      y: this.y + (dy * this.nodeRadius) / scale,
-    };
+    let distanceFromCenter = dx * dx + dy * dy;
+    return distanceFromCenter < this.nodeRadius * this.nodeRadius;
+  }
+  setMouseStart(x, y) {
+    this.mouseOffsetX = this.x - x;
+    this.mouseOffsetY = this.y - y;
+  }
+  setAnchorPoint(x, y) {
+    this.x = x + this.mouseOffsetX;
+    this.y = y + this.mouseOffsetY;
   }
 }

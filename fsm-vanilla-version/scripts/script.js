@@ -6,6 +6,8 @@ let canvas;
 let nodes = [],
   links = [];
 let selectedObject = null; // node or link
+let originalClick,
+  movingObject = false;
 
 window.onload = function () {
   canvas = document.getElementById("canvas");
@@ -14,22 +16,53 @@ window.onload = function () {
   // create node
   canvas.ondblclick = function (e) {
     let mouse = getRelativeMousePosition(e, canvas);
-    nodes.push(new Node(mouse.x, mouse.y));
-    redraw(context, canvas, nodes);
+    selectedObject = selectAnObject(mouse.x, mouse.y);
+
+    // if no object at mouse position create node
+    if (selectedObject === null) {
+      let newNode = new Node(mouse.x, mouse.y);
+      nodes.push(newNode);
+      selectedObject = newNode;
+      redraw(context, canvas, nodes, selectedObject);
+    }
   };
 
   // select an object
   canvas.onmousedown = function (e) {
     let mouse = getRelativeMousePosition(e, canvas);
-    selectedObject = selectAnObject(mouse.x, mouse.y, context);
+    selectedObject = selectAnObject(mouse.x, mouse.y);
+    originalClick = mouse;
+    movingObject = false;
+
+    if (selectedObject != null) {
+      movingObject = true;
+      console.log(selectedObject);
+      if (selectedObject.setMouseStart)
+        selectedObject.setMouseStart(mouse.x, mouse.y);
+    }
+    redraw(context, canvas, nodes, selectedObject);
+  };
+
+  canvas.onmousemove = function (e) {
+    let mouse = getRelativeMousePosition(e, canvas);
+
+    if (movingObject) {
+      selectedObject.setAnchorPoint(mouse.x, mouse.y);
+      redraw(context, canvas, nodes, selectedObject);
+    }
+  };
+
+  canvas.onmouseup = function (e) {
+    movingObject = false;
   };
 };
 
-function selectAnObject(x, y, context) {
-  nodes.forEach((node) => {
+function selectAnObject(x, y) {
+  for (let i = 0; i < nodes.length; i++) {
+    let node = nodes[i];
     if (node.containsPoint(x, y)) {
-      selectedObject = node;
-      node.draw(context, "blue");
+      return node;
     }
-  });
+  }
+  return null;
 }
