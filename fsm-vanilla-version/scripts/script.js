@@ -23,8 +23,10 @@ window.onload = function () {
       let newNode = new Node(mouse.x, mouse.y);
       nodes.push(newNode);
       selectedObject = newNode;
-      redraw(context, canvas, nodes, selectedObject);
+    } else if (selectedObject instanceof Node) {
+      selectedObject.setAcceptState();
     }
+    redraw(context, canvas, nodes, selectedObject);
   };
 
   // select an object
@@ -36,7 +38,6 @@ window.onload = function () {
 
     if (selectedObject != null) {
       movingObject = true;
-      console.log(selectedObject);
       if (selectedObject.setMouseStart)
         selectedObject.setMouseStart(mouse.x, mouse.y);
     }

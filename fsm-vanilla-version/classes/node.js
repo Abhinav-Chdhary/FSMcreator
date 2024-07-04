@@ -27,6 +27,9 @@ export default class Node {
     let distanceFromCenter = dx * dx + dy * dy;
     return distanceFromCenter < this.nodeRadius * this.nodeRadius;
   }
+  setAcceptState() {
+    this.isAcceptState = true;
+  }
   setMouseStart(x, y) {
     this.mouseOffsetX = this.x - x;
     this.mouseOffsetY = this.y - y;
