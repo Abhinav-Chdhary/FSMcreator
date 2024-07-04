@@ -3,15 +3,19 @@ import { redraw } from "../util/Redraw";
 import Node from "../classes/node";
 
 let canvas;
+let context;
 let nodes = [],
   links = [];
 let selectedObject = null; // node or link
 let originalClick,
   movingObject = false;
+let caretVisible = false,
+  caretTimer;
 
 window.onload = function () {
   canvas = document.getElementById("canvas");
-  const context = canvas.getContext("2d");
+  context = canvas.getContext("2d");
+  const inputBox = document.getElementById("input");
 
   // create node
   canvas.ondblclick = function (e) {
@@ -23,6 +27,7 @@ window.onload = function () {
       let newNode = new Node(mouse.x, mouse.y);
       nodes.push(newNode);
       selectedObject = newNode;
+      resetCaret(context);
     } else if (selectedObject instanceof Node) {
       selectedObject.setAcceptState();
     }
@@ -40,6 +45,7 @@ window.onload = function () {
       movingObject = true;
       if (selectedObject.setMouseStart)
         selectedObject.setMouseStart(mouse.x, mouse.y);
+      resetCaret(context);
     }
     redraw(context, canvas, nodes, selectedObject);
   };
@@ -58,6 +64,23 @@ window.onload = function () {
   };
 };
 
+document.onkeydown = function (e) {
+  const key = e.key;
+  if (key === "Backspace") {
+    if (selectedObject != null && "text" in selectedObject) {
+      selectedObject.text = selectedObject.text.substr(
+        0,
+        selectedObject.text.length - 1
+      );
+      resetCaret();
+      redraw(context, canvas, nodes, selectedObject);
+    }
+  } else if ((key >= "a" && key <= "z") || (key >= "A" && key <= "Z")) {
+    selectedObject.text += key;
+    redraw(context, canvas, nodes, selectedObject);
+  }
+};
+
 function selectAnObject(x, y) {
   for (let i = 0; i < nodes.length; i++) {
     let node = nodes[i];
@@ -66,4 +89,13 @@ function selectAnObject(x, y) {
     }
   }
   return null;
+}
+
+function resetCaret() {
+  clearInterval(caretTimer);
+  caretTimer = setInterval(function () {
+    caretVisible = !caretVisible;
+    redraw(context, canvas, nodes, selectedObject, caretVisible);
+  }, 500);
+  caretVisible = true;
 }
