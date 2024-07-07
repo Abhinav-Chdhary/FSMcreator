@@ -1,6 +1,8 @@
 import { getRelativeMousePosition } from "../util/MousePosition";
 import { redraw } from "../util/Redraw";
 import Node from "../classes/node";
+import TempLink from "../classes/tempLink";
+import StartLink from "../classes/startLink";
 
 let canvas;
 let context;
@@ -11,11 +13,12 @@ let originalClick,
   movingObject = false;
 let caretVisible = false,
   caretTimer;
+let shiftPressed = false;
+let currentLink = null;
 
 window.onload = function () {
   canvas = document.getElementById("canvas");
   context = canvas.getContext("2d");
-  const inputBox = document.getElementById("input");
 
   // create node
   canvas.ondblclick = function (e) {
@@ -31,7 +34,15 @@ window.onload = function () {
     } else if (selectedObject instanceof Node) {
       selectedObject.setAcceptState();
     }
-    redraw(context, canvas, nodes, selectedObject);
+    redraw(
+      context,
+      canvas,
+      nodes,
+      links,
+      selectedObject,
+      caretVisible,
+      currentLink
+    );
   };
 
   // select an object
@@ -46,21 +57,79 @@ window.onload = function () {
       if (selectedObject.setMouseStart)
         selectedObject.setMouseStart(mouse.x, mouse.y);
       resetCaret(context);
+    } else if (shiftPressed) {
+      currentLink = new TempLink(mouse, mouse);
     }
-    redraw(context, canvas, nodes, selectedObject);
+    redraw(
+      context,
+      canvas,
+      nodes,
+      links,
+      selectedObject,
+      caretVisible,
+      currentLink
+    );
   };
 
   canvas.onmousemove = function (e) {
     let mouse = getRelativeMousePosition(e, canvas);
 
+    if (currentLink != null) {
+      //console.log(currentLink);
+      let targetNode = selectAnObject(mouse.x, mouse.y);
+      if (!(targetNode instanceof Node)) {
+        targetNode = null;
+      }
+      if (selectedObject == null) {
+        if (targetNode !== null) {
+          currentLink = new StartLink(targetNode, originalClick);
+        } else {
+          currentLink = new TempLink(originalClick, mouse);
+        }
+      }
+      redraw(
+        context,
+        canvas,
+        nodes,
+        links,
+        selectedObject,
+        caretVisible,
+        currentLink
+      );
+    }
+
     if (movingObject) {
       selectedObject.setAnchorPoint(mouse.x, mouse.y);
-      redraw(context, canvas, nodes, selectedObject);
+      redraw(
+        context,
+        canvas,
+        nodes,
+        links,
+        selectedObject,
+        caretVisible,
+        currentLink
+      );
     }
   };
 
   canvas.onmouseup = function (e) {
     movingObject = false;
+
+    if (currentLink != null) {
+      if (!(currentLink instanceof TempLink)) {
+        links.push(currentLink);
+      }
+      currentLink = null;
+    }
+    redraw(
+      context,
+      canvas,
+      nodes,
+      links,
+      selectedObject,
+      caretVisible,
+      currentLink
+    );
   };
 };
 
@@ -73,7 +142,14 @@ document.onkeydown = function (e) {
         selectedObject.text.length - 1
       );
       resetCaret();
-      redraw(context, canvas, nodes, selectedObject);
+      redraw(
+        context,
+        canvas,
+        nodes,
+        selectedObject,
+        caretVisible,
+        caretVisible
+      );
     }
   } else if (
     selectedObject != null &&
@@ -81,11 +157,24 @@ document.onkeydown = function (e) {
     key.length == 1 &&
     ((key >= "a" && key <= "z") || (key >= "A" && key <= "Z"))
   ) {
-    console;
     selectedObject.text += key;
-    redraw(context, canvas, nodes, selectedObject);
-  } else {
-    console.log(key);
+    redraw(
+      context,
+      canvas,
+      nodes,
+      links,
+      selectedObject,
+      caretVisible,
+      currentLink
+    );
+  } else if (key === "Shift") {
+    shiftPressed = true;
+  }
+};
+document.onkeyup = function (e) {
+  const key = e.key;
+  if (key === "Shift") {
+    shiftPressed = false;
   }
 };
 
@@ -103,7 +192,15 @@ function resetCaret() {
   clearInterval(caretTimer);
   caretTimer = setInterval(function () {
     caretVisible = !caretVisible;
-    redraw(context, canvas, nodes, selectedObject, caretVisible);
+    redraw(
+      context,
+      canvas,
+      nodes,
+      links,
+      selectedObject,
+      caretVisible,
+      currentLink
+    );
   }, 500);
   caretVisible = true;
 }

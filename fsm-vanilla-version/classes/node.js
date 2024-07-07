@@ -54,4 +54,14 @@ export default class Node {
       context.stroke();
     }
   }
+  closestPointOnCircle(x, y) {
+    let dx = x - this.x;
+    let dy = y - this.y;
+    let scale = Math.sqrt(dx * dx + dy * dy);
+
+    return {
+      x: this.x + (dx * this.nodeRadius) / scale,
+      y: this.y + (dy * this.nodeRadius) / scale,
+    };
+  }
 }
