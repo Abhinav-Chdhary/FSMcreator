@@ -1,0 +1,67 @@
+import drawArrow from "../util/drawArrow";
+
+export default class SelfLink {
+  constructor(node, mouse) {
+    this.node = node;
+    this.anchorAngle = 0;
+    this.mouseOffsetAngle = 0;
+    this.text = "";
+    this.nodeRadius = 30;
+
+    if (mouse) {
+      this.setAnchorPoint(mouse.x, mouse.y);
+    }
+  }
+  setMouseStart(x, y) {
+    this.mouseOffsetAngle =
+      this.anchorAngle - Math.atan2(y - this.node.y, x - this.node.x);
+  }
+  setAnchorPoint(x, y) {
+    this.anchorAngle =
+      Math.atan2(y - this.node.y, x - this.node.x) + this.mouseOffsetAngle;
+  }
+  getEndPointsAndCircle() {
+    let circleX =
+      this.node.x + 1.5 * this.nodeRadius * Math.cos(this.anchorAngle);
+    let circleY =
+      this.node.y + 1.5 * this.nodeRadius * Math.sin(this.anchorAngle);
+    let circleRadius = 0.75 * this.nodeRadius;
+    let startAngle = this.anchorAngle - Math.PI * 0.8;
+    let endAngle = this.anchorAngle + Math.PI * 0.8;
+    let startX = circleX + circleRadius * Math.cos(startAngle);
+    let startY = circleY + circleRadius * Math.sin(startAngle);
+    let endX = circleX + circleRadius * Math.cos(endAngle);
+    let endY = circleY + circleRadius * Math.sin(endAngle);
+
+    return {
+      hasCircle: true,
+      startX: startX,
+      startY: startY,
+      endX: endX,
+      endY: endY,
+      startAngle: startAngle,
+      endAngle: endAngle,
+      circleX: circleX,
+      circleY: circleY,
+      circleRadius: circleRadius,
+    };
+  }
+  draw(context, color = "black") {
+    let stuff = this.getEndPointsAndCircle();
+    // draw the arc
+    context.beginPath();
+    context.arc(
+      stuff.circleX,
+      stuff.circleY,
+      stuff.circleRadius,
+      stuff.startAngle,
+      stuff.endAngle,
+      false
+    );
+    context.strokeStyle = color;
+    context.stroke();
+
+    // draw the head of arrow
+    drawArrow(context, stuff.endX, stuff.endY, stuff.endAngle + Math.PI * 0.4);
+  }
+}

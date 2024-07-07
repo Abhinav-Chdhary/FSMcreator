@@ -26,12 +26,13 @@ export default class StartLink {
       endY: end.y,
     };
   }
-  draw(context) {
+  draw(context, color = "black") {
     let coordinates = this.getEndPoints();
 
     context.beginPath();
     context.moveTo(coordinates.startX, coordinates.startY);
     context.lineTo(coordinates.endX, coordinates.endY);
+    context.strokeStyle = color;
     context.stroke();
 
     drawArrow(

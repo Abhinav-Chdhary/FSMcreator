@@ -1,4 +1,6 @@
-class Link {
+import drawArrow from "../util/drawArrow";
+
+export default class Link {
   constructor(nodeA, nodeB) {
     this.nodeA = nodeA;
     this.nodeB = nodeB;
@@ -89,5 +91,42 @@ class Link {
       reverseScale: reverseScale,
       isReversed: isReversed,
     };
+  }
+  draw(context, color = "black") {
+    let stuff = this.getEndPointsAndCircle();
+
+    // draw the arc
+    context.beginPath();
+    if (stuff.hasCircle) {
+      context.arc(
+        stuff.circleX,
+        stuff.circleY,
+        stuff.startAngle,
+        stuff.endAngle,
+        stuff.isReversed
+      );
+    } else {
+      context.moveTo(stuff.startX, stuff.startY);
+      context.lineTo(stuff.endX, stuff.endY);
+    }
+    context.strokeStyle = color;
+    context.stroke();
+
+    // the arrow head
+    if (stuff.hasCircle) {
+      drawArrow(
+        context,
+        stuff.endX,
+        stuff.endY,
+        stuff.endAngle - stuff.reverseScale * (Math.PI / 2)
+      );
+    } else {
+      drawArrow(
+        context,
+        stuff.endX,
+        stuff.endY,
+        Math.atan2(stuff.endY - stuff.startY, stuff.endX - stuff.startX)
+      );
+    }
   }
 }

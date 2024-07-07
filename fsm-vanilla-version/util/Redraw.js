@@ -13,7 +13,8 @@ export function redraw(
     else node.draw(context);
   });
   links.forEach((link) => {
-    link.draw(context);
+    if (link === selectedObject) link.draw(context, "blue");
+    else link.draw(context);
   });
   if (currentLink != null) {
     context.lineWidth = 1;

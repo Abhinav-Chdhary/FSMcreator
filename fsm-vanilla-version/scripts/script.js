@@ -3,6 +3,8 @@ import { redraw } from "../util/Redraw";
 import Node from "../classes/node";
 import TempLink from "../classes/tempLink";
 import StartLink from "../classes/startLink";
+import Link from "../classes/link";
+import SelfLink from "../classes/selfLink";
 
 let canvas;
 let context;
@@ -53,9 +55,13 @@ window.onload = function () {
     movingObject = false;
 
     if (selectedObject != null) {
-      movingObject = true;
-      if (selectedObject.setMouseStart)
-        selectedObject.setMouseStart(mouse.x, mouse.y);
+      if (shiftPressed && selectedObject instanceof Node) {
+        currentLink = new SelfLink(selectedObject, mouse);
+      } else {
+        movingObject = true;
+        if (selectedObject.setMouseStart)
+          selectedObject.setMouseStart(mouse.x, mouse.y);
+      }
       resetCaret(context);
     } else if (shiftPressed) {
       currentLink = new TempLink(mouse, mouse);
@@ -80,11 +86,24 @@ window.onload = function () {
       if (!(targetNode instanceof Node)) {
         targetNode = null;
       }
-      if (selectedObject == null) {
+      if (selectedObject === null) {
+        // if no begin node
         if (targetNode !== null) {
           currentLink = new StartLink(targetNode, originalClick);
         } else {
           currentLink = new TempLink(originalClick, mouse);
+        }
+      } else {
+        // if there's a begin node
+        if (targetNode === selectedObject) {
+          currentLink = new SelfLink(selectedObject, mouse);
+        } else if (targetNode !== null) {
+          currentLink = new Link(selectedObject, targetNode);
+        } else {
+          currentLink = new TempLink(
+            selectedObject.closestPointOnCircle(mouse.x, mouse.y),
+            mouse
+          );
         }
       }
       redraw(
@@ -120,16 +139,16 @@ window.onload = function () {
         links.push(currentLink);
       }
       currentLink = null;
+      redraw(
+        context,
+        canvas,
+        nodes,
+        links,
+        selectedObject,
+        caretVisible,
+        currentLink
+      );
     }
-    redraw(
-      context,
-      canvas,
-      nodes,
-      links,
-      selectedObject,
-      caretVisible,
-      currentLink
-    );
   };
 };
 
