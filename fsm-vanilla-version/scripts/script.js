@@ -75,9 +75,17 @@ document.onkeydown = function (e) {
       resetCaret();
       redraw(context, canvas, nodes, selectedObject);
     }
-  } else if ((key >= "a" && key <= "z") || (key >= "A" && key <= "Z")) {
+  } else if (
+    selectedObject != null &&
+    "text" in selectedObject &&
+    key.length == 1 &&
+    ((key >= "a" && key <= "z") || (key >= "A" && key <= "Z"))
+  ) {
+    console;
     selectedObject.text += key;
     redraw(context, canvas, nodes, selectedObject);
+  } else {
+    console.log(key);
   }
 };
 
