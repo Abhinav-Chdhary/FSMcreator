@@ -39,7 +39,19 @@ export default class StartLink {
       context,
       coordinates.endX,
       coordinates.endY,
-      Math.atan2(-this.deltaY, -this.deltaX)
+      Math.atan2(-this.deltaY, -this.deltaX),
+      color
     );
+  }
+  containsPoint(x, y) {
+    let stuff = this.getEndPoints();
+    let hitTargetPadding = 6; // six is target padding
+    let dx = stuff.endX - stuff.startX;
+    let dy = stuff.endY - stuff.startY;
+    let length = Math.sqrt(dx * dx + dy * dy);
+    let percent =
+      (dx * (x - stuff.startX) + dy * (y - stuff.startY)) / (length * length);
+    let distance = (dx * (y - stuff.startY) - dy * (x - stuff.startX)) / length;
+    return percent > 0 && percent < 1 && Math.abs(distance) < hitTargetPadding;
   }
 }

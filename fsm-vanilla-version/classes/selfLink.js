@@ -62,6 +62,20 @@ export default class SelfLink {
     context.stroke();
 
     // draw the head of arrow
-    drawArrow(context, stuff.endX, stuff.endY, stuff.endAngle + Math.PI * 0.4);
+    drawArrow(
+      context,
+      stuff.endX,
+      stuff.endY,
+      stuff.endAngle + Math.PI * 0.4,
+      color
+    );
+  }
+  containsPoint(x, y) {
+    let stuff = this.getEndPointsAndCircle();
+    let dx = x - stuff.circleX;
+    let dy = y - stuff.circleY;
+    let distance = Math.sqrt(dx * dx + dy * dy) - stuff.circleRadius;
+    let hitTargetPadding = 6; // six is target padding
+    return Math.abs(distance) < hitTargetPadding;
   }
 }

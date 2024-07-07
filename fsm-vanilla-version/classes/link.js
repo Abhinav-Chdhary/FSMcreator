@@ -118,15 +118,57 @@ export default class Link {
         context,
         stuff.endX,
         stuff.endY,
-        stuff.endAngle - stuff.reverseScale * (Math.PI / 2)
+        stuff.endAngle - stuff.reverseScale * (Math.PI / 2),
+        color
       );
     } else {
       drawArrow(
         context,
         stuff.endX,
         stuff.endY,
-        Math.atan2(stuff.endY - stuff.startY, stuff.endX - stuff.startX)
+        Math.atan2(stuff.endY - stuff.startY, stuff.endX - stuff.startX),
+        color
       );
     }
+  }
+  containsPoint(x, y) {
+    let hitTargetPadding = 6;
+    let stuff = this.getEndPointsAndCircle();
+    if (stuff.hasCircle) {
+      let dx = x - stuff.circleX;
+      let dy = y - stuff.circleY;
+      let distance = Math.sqrt(dx * dx + dy * dy) - stuff.circleRadius;
+      if (Math.abs(distance) < hitTargetPadding) {
+        let angle = Math.atan2(dy, dx);
+        let startAngle = stuff.startAngle;
+        let endAngle = stuff.endAngle;
+        if (stuff.isReversed) {
+          let temp = startAngle;
+          startAngle = endAngle;
+          endAngle = temp;
+        }
+        if (endAngle < startAngle) {
+          endAngle += Math.PI * 2;
+        }
+        if (angle < startAngle) {
+          angle += Math.PI * 2;
+        } else if (angle > endAngle) {
+          angle -= Math.PI * 2;
+        }
+        return angle > startAngle && angle < endAngle;
+      }
+    } else {
+      let dx = stuff.endX - stuff.startX;
+      let dy = stuff.endY - stuff.startY;
+      let length = Math.sqrt(dx * dx + dy * dy);
+      let percent =
+        (dx * (x - stuff.startX) + dy * (y - stuff.startY)) / (length * length);
+      let distance =
+        (dx * (y - stuff.startY) - dy * (x - stuff.startX)) / length;
+      return (
+        percent > 0 && percent < 1 && Math.abs(distance) < hitTargetPadding
+      );
+    }
+    return false;
   }
 }

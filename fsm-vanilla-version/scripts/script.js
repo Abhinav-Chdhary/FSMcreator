@@ -204,6 +204,12 @@ function selectAnObject(x, y) {
       return node;
     }
   }
+  for (let i = 0; i < links.length; i++) {
+    let link = links[i];
+    if (link.containsPoint(x, y)) {
+      return link;
+    }
+  }
   return null;
 }
 
