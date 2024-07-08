@@ -52,6 +52,14 @@ input {
   top: 0;
   opacity: 0.5;
 }
+.insContainer {
+  max-width: 800px;
+  text-align: left;
+  margin: 1em auto;
+}
+a{
+  text-decoration: none;
+}
 
 @media (prefers-color-scheme: light) {
   :root {
