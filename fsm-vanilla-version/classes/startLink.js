@@ -1,10 +1,12 @@
 import drawArrow from "../util/drawArrow";
+import drawLinkText from "../util/drawLinkText";
 
 export default class StartLink {
   constructor(node, start) {
     this.node = node;
     this.deltaX = 0;
     this.deltaY = 0;
+    this.text = "t";
 
     if (start) {
       this.setAnchorPoint(start.x, start.y);
@@ -26,7 +28,7 @@ export default class StartLink {
       endY: end.y,
     };
   }
-  draw(context, color = "black") {
+  draw(context, color = "black", caretVisible = false) {
     let coordinates = this.getEndPoints();
 
     context.beginPath();
@@ -34,6 +36,20 @@ export default class StartLink {
     context.lineTo(coordinates.endX, coordinates.endY);
     context.strokeStyle = color;
     context.stroke();
+
+    let textAngle = Math.atan2(
+      coordinates.startY - coordinates.endY,
+      coordinates.startX - coordinates.endX
+    );
+    drawLinkText(
+      context,
+      this.text,
+      coordinates.startX,
+      coordinates.startY,
+      textAngle,
+      color,
+      caretVisible
+    );
 
     drawArrow(
       context,

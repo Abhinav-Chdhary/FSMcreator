@@ -32,7 +32,7 @@ window.onload = function () {
       let newNode = new Node(mouse.x, mouse.y);
       nodes.push(newNode);
       selectedObject = newNode;
-      resetCaret(context);
+      resetCaret();
     } else if (selectedObject instanceof Node) {
       selectedObject.setAcceptState();
     }
@@ -62,7 +62,7 @@ window.onload = function () {
         if (selectedObject.setMouseStart)
           selectedObject.setMouseStart(mouse.x, mouse.y);
       }
-      resetCaret(context);
+      resetCaret();
     } else if (shiftPressed) {
       currentLink = new TempLink(mouse, mouse);
     }
@@ -136,7 +136,9 @@ window.onload = function () {
 
     if (currentLink != null) {
       if (!(currentLink instanceof TempLink)) {
+        selectedObject = currentLink;
         links.push(currentLink);
+        resetCaret();
       }
       currentLink = null;
       redraw(
@@ -156,27 +158,27 @@ document.onkeydown = function (e) {
   const key = e.key;
   if (key === "Backspace") {
     if (selectedObject != null && "text" in selectedObject) {
-      selectedObject.text = selectedObject.text.substr(
-        0,
-        selectedObject.text.length - 1
-      );
+      let len = selectedObject.text.length;
+      let newText = selectedObject.text.substr(0, len - 1);
+      selectedObject.text = newText;
       resetCaret();
       redraw(
         context,
         canvas,
         nodes,
+        links,
         selectedObject,
         caretVisible,
-        caretVisible
+        currentLink
       );
     }
   } else if (
     selectedObject != null &&
     "text" in selectedObject &&
-    key.length == 1 &&
-    ((key >= "a" && key <= "z") || (key >= "A" && key <= "Z"))
+    /^[a-zA-Z0-9]$/.test(key)
   ) {
     selectedObject.text += key;
+    resetCaret();
     redraw(
       context,
       canvas,

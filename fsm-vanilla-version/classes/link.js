@@ -1,10 +1,11 @@
 import drawArrow from "../util/drawArrow";
+import drawLinkText from "../util/drawLinkText";
 
 export default class Link {
   constructor(nodeA, nodeB) {
     this.nodeA = nodeA;
     this.nodeB = nodeB;
-    this.text = "";
+    this.text = "t";
     this.lineAngleAdjust = 0;
     this.parallelPart = 0.5;
     this.perpendicularPart = 0;
@@ -92,7 +93,7 @@ export default class Link {
       isReversed: isReversed,
     };
   }
-  draw(context, color = "black") {
+  draw(context, color = "black", caretVisible = false) {
     let stuff = this.getEndPointsAndCircle();
 
     // draw the arc
@@ -128,6 +129,43 @@ export default class Link {
         stuff.endY,
         Math.atan2(stuff.endY - stuff.startY, stuff.endX - stuff.startX),
         color
+      );
+    }
+
+    // draw text
+    if (stuff.hasCircle) {
+      let startAngle = stuff.startAngle;
+      let endAngle = stuff.endAngle;
+      if (endAngle < startAngle) {
+        endAngle += Math.PI * 2;
+      }
+      let textAngle = (startAngle + endAngle) / 2 + stuff.isReversed * Math.PI;
+      let textX = stuff.circleX + stuff.circleRadius * Math.cos(textAngle);
+      let textY = stuff.circleY + stuff.circleRadius * Math.sin(textAngle);
+      drawLinkText(
+        context,
+        this.text,
+        textX,
+        textY,
+        textAngle + this.lineAngleAdjust,
+        color,
+        caretVisible
+      );
+    } else {
+      let textX = (stuff.startX + stuff.endX) / 2;
+      let textY = (stuff.startY + stuff.endY) / 2;
+      let textAngle = Math.atan2(
+        stuff.endX - stuff.startX,
+        stuff.startY - stuff.endY
+      );
+      drawLinkText(
+        context,
+        this.text,
+        textX,
+        textY,
+        textAngle + this.lineAngleAdjust,
+        color,
+        caretVisible
       );
     }
   }

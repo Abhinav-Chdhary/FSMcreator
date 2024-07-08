@@ -1,11 +1,12 @@
 import drawArrow from "../util/drawArrow";
+import drawLinkText from "../util/drawLinkText";
 
 export default class SelfLink {
   constructor(node, mouse) {
     this.node = node;
     this.anchorAngle = 0;
     this.mouseOffsetAngle = 0;
-    this.text = "";
+    this.text = "t";
     this.nodeRadius = 30;
 
     if (mouse) {
@@ -46,7 +47,7 @@ export default class SelfLink {
       circleRadius: circleRadius,
     };
   }
-  draw(context, color = "black") {
+  draw(context, color = "black", caretVisible = false) {
     let stuff = this.getEndPointsAndCircle();
     // draw the arc
     context.beginPath();
@@ -60,6 +61,19 @@ export default class SelfLink {
     );
     context.strokeStyle = color;
     context.stroke();
+
+    // draw text
+    let textX = stuff.circleX + stuff.circleRadius * Math.cos(this.anchorAngle);
+    let textY = stuff.circleY + stuff.circleRadius * Math.sin(this.anchorAngle);
+    drawLinkText(
+      context,
+      this.text,
+      textX,
+      textY,
+      this.anchorAngle,
+      color,
+      caretVisible
+    );
 
     // draw the head of arrow
     drawArrow(
