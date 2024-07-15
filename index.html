@@ -6,6 +6,7 @@
     <link rel="stylesheet" type="text/css" href="style.css" />
     <link rel="icon" href="TitleLogo.png" />
     <script type="module" src="./scripts/script.js"></script>
+    <script src="./scripts/export.js"></script>
     <title>FSM Designer</title>
   </head>
   <body>
@@ -15,9 +16,9 @@
     <div>
       <div>
         Export as:
-        <button>PNG</button>
+        <button onclick="handleExportPNG()">PNG</button>
         <button>SVG</button>
-        <!-- <input type="text" id="searchBox" value=""/> -->
+        <input type="text" id="searchBox" value="" hidden />
       </div>
       <div class="insContainer">
         Instructions:

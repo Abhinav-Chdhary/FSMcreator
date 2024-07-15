@@ -8,6 +8,10 @@ export function redraw(
   currentLink
 ) {
   context.clearRect(0, 0, canvas.width, canvas.height);
+  context.rect(0, 0, canvas.width, canvas.height);
+  context.fillStyle = "white";
+  context.fill();
+
   for (let i = 0; i < nodes.length; i++) {
     let node = nodes[i];
     if (node === selectedObject) node.draw(context, "blue", caretVisible);
