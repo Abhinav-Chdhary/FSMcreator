@@ -8,7 +8,7 @@ import SelfLink from "../classes/selfLink";
 
 let canvas;
 let context;
-let nodes = [],
+export let nodes = [],
   links = [];
 let selectedObject = null; // node or link
 let originalClick,
@@ -261,4 +261,23 @@ function resetCaret() {
     );
   }, 500);
   caretVisible = true;
+}
+
+const searchBox = document.getElementById("searchBox");
+
+searchBox.addEventListener("change", handleSearchChange);
+
+function handleSearchChange(event) {
+  let searchString = event.target.value;
+  if (searchString.length === 0) return;
+  nodes.forEach((node) => {
+    if (node.text.includes(searchString)) {
+      node.draw(context, "red");
+    }
+  });
+  links.forEach((link) => {
+    if (link.text.includes(searchString)) {
+      link.draw(context, "red");
+    }
+  });
 }
