@@ -5,8 +5,16 @@
 
     <link rel="icon" href="TitleLogo.png" />
     <title>FSM Designer</title>
-    <script type="module" crossorigin src="/FSMcreator/assets/index-Ba0ugMsH.js"></script>
-    <link rel="stylesheet" crossorigin href="/FSMcreator/assets/index-C9YO5tlX.css">
+    <script
+      type="module"
+      crossorigin
+      src="/FSMcreator/assets/index-DKeXpQfA.js"
+    ></script>
+    <link
+      rel="stylesheet"
+      crossorigin
+      href="/FSMcreator/assets/index-CBp9PZyL.css"
+    />
   </head>
   <body>
     <h1>Finite State Machine Designer</h1>
@@ -16,7 +24,9 @@
       <div>
         Export as:
         <button onclick="handleExportPNG()">PNG</button>
-        <button>SVG</button>
+        <button onclick="handleExportSVG()">SVG</button>
+        <br />
+        <textarea id="result"></textarea>
         <input type="text" id="searchBox" value="" hidden />
       </div>
       <div class="insContainer">
