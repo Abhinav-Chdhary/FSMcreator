@@ -6,7 +6,7 @@ export default class StartLink {
     this.node = node;
     this.deltaX = 0;
     this.deltaY = 0;
-    this.text = "t";
+    this.text = "";
 
     if (start) {
       this.setAnchorPoint(start.x, start.y);

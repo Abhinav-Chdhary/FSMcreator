@@ -3,7 +3,7 @@ export default class Node {
     this.x = x;
     this.y = y;
     this.isAcceptState = false;
-    this.text = "S";
+    this.text = "";
     this.nodeRadius = 30;
     this.mouseOffsetX = 0;
     this.mouseOffsetY = 0;

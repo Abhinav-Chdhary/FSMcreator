@@ -6,7 +6,7 @@ export default class SelfLink {
     this.node = node;
     this.anchorAngle = 0;
     this.mouseOffsetAngle = 0;
-    this.text = "t";
+    this.text = "";
     this.nodeRadius = 30;
 
     if (mouse) {

@@ -5,7 +5,7 @@ export default class Link {
   constructor(nodeA, nodeB) {
     this.nodeA = nodeA;
     this.nodeB = nodeB;
-    this.text = "t";
+    this.text = "";
     this.lineAngleAdjust = 0;
     this.parallelPart = 0.5;
     this.perpendicularPart = 0;
