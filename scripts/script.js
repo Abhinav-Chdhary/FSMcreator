@@ -192,35 +192,30 @@ document.onkeydown = function (e) {
     shiftPressed = true;
   } else if (key === "Delete") {
     if (selectedObject !== null) {
-      for (let i = 0; i < nodes.length; i++) {
-        if (nodes[i] === selectedObject) {
-          nodes.splice(i--, 1);
-        }
-      }
-      for (let i = 0; i < nodes.length; i++) {
-        if (links[i] === selectedObject) links.splice(i--, 1);
-        else if (
-          links[i] instanceof SelfLink &&
-          links[i].node === selectedObject
-        )
-          links.splice(i--, 1);
-        else if (
-          links[i] instanceof Link &&
-          (links[i].nodeA === selectedObject ||
-            links[i].nodeB === selectedObject)
-        )
-          links.splice(i--, 1);
-      }
+      // Remove nodes
+      nodes = nodes.filter((node) => node !== selectedObject);
+
+      // Remove links
+      links = links.filter(
+        (link) =>
+          link !== selectedObject &&
+          !(link instanceof SelfLink && link.node === selectedObject) &&
+          !(
+            link instanceof Link &&
+            (link.nodeA === selectedObject || link.nodeB === selectedObject)
+          )
+      );
+
+      redraw(
+        context,
+        canvas,
+        nodes,
+        links,
+        selectedObject,
+        caretVisible,
+        currentLink
+      );
     }
-    redraw(
-      context,
-      canvas,
-      nodes,
-      links,
-      selectedObject,
-      caretVisible,
-      currentLink
-    );
   }
 };
 document.onkeyup = function (e) {
