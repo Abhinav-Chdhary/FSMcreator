@@ -52,8 +52,14 @@ button:focus-visible {
   text-align: left;
   margin: 20px auto;
 }
-a{
+a {
   text-decoration: none;
+}
+textarea {
+  height: 400px;
+  width: 800px;
+  display: none;
+  margin: 5px auto;
 }
 
 @media (prefers-color-scheme: light) {
